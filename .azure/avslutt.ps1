@@ -1,0 +1,1 @@
+az deployment group create -g RG-Kompetanse-Dev -f .\ResourceGroupCleanup.bicep --mode Complete 

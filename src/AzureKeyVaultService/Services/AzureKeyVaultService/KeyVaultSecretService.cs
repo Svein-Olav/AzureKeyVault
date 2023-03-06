@@ -1,22 +1,26 @@
 namespace AzureKeyVaultService;
 public class KeyVaultSecretsService : IKeyVaultSecretsService
 {
-    private readonly IKeyVaultClient _keyVaultClient;
-    private readonly string _secretName;
-    private readonly string _secretVersion;
-    private readonly string _vaultName;
+    public SecretClient _keyVaultClient { get; set; }
+    public string   _vaultName { get; set; }
 
-    public KeyVaultSecretsService(IKeyVaultClient keyVaultClient, string secretName, string secretVersion, string vaultName)
+    
+    public KeyVaultSecretsService(IOptions<AzureKeyVaultOptions> options)
     {
-        _keyVaultClient = keyVaultClient;
-        _secretName = secretName;
-        _secretVersion = secretVersion;
-        _vaultName = vaultName;
+        _keyVaultClient = new SecretClient(new Uri(options.Value.Vault), new DefaultAzureCredential());        
+        _vaultName = options.Value.Vault;
     }
+    
 
     public async Task<string> GetSecret()
     {
-        var secret = await _keyVaultClient.GetSecretAsync($"https://{_vaultName}.vault.azure.net/secrets/{_secretName}/{_secretVersion}");
-        return secret.Value;
+        var secret = await _keyVaultClient.GetSecretAsync($"https://{_vaultName}.vault.azure.net/", "MySecret");
+        return secret.Value.Value;
+       
+    }
+
+    public string test()
+    {
+        return _vaultName;
     }
 }

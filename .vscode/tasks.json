@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/CryptoService/CryptoService.csproj",
+                "${workspaceFolder}/src/AzureKeyVaultService/CryptoService.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/CryptoService/CryptoService.csproj",
+                "${workspaceFolder}/src/AzureKeyVaultService/CryptoService.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/CryptoService/CryptoService.csproj"
+                "${workspaceFolder}/src/AzureKeyVaultService/CryptoService.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

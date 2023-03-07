@@ -1,26 +1,28 @@
 namespace AzureKeyVaultService;
-public class KeyVaultSecretsService : IKeyVaultSecretsService
+public class KeyVaultSecretsService : AzureKeyVaultBase, IKeyVaultSecretsService
 {
-    public SecretClient _keyVaultClient { get; set; }
-    public string   _vaultName { get; set; }
-
     
-    public KeyVaultSecretsService(IOptions<AzureKeyVaultOptions> options)
-    {
-        _keyVaultClient = new SecretClient(new Uri(options.Value.Vault), new DefaultAzureCredential());        
-        _vaultName = options.Value.Vault;
-    }
-    
+     public KeyVaultSecretsService (AzureKeyVaultOptions options) : base(options)
+     {
+     }
 
-    public async Task<string> GetSecret()
+    public KeyVaultSecretsService(string keyVaultName) : base(keyVaultName)
     {
-        var secret = await _keyVaultClient.GetSecretAsync($"https://{_vaultName}.vault.azure.net/", "MySecret");
-        return secret.Value.Value;
-       
     }
 
-    public string test()
+    public string GetSecret(string secretName)
     {
-        return _vaultName;
+        string returnVerdi;
+
+        try
+        {
+            KeyVaultSecret secret = _secretClient.GetSecret(secretName, cancellationToken: _cancellationToken);
+            returnVerdi = secret.Value ?? string.Empty;
+        } catch(Exception ex)
+        {
+            returnVerdi =ex.Message;
+        }
+        return returnVerdi;
     }
+
 }

@@ -1,6 +1,8 @@
 namespace Microsoft.Extensions.DependencyInjection;
 public static class ServiceCollection
 {
+    public static string DEFAULT_KEYVAULT_NAME = "kv-kompetanse";
+
     public static IServiceCollection AddKeyVaultConfig(
              this IServiceCollection services, IConfiguration config)
         {
@@ -11,7 +13,7 @@ public static class ServiceCollection
     
     public static IServiceCollection AddKeyVaultServices(this IServiceCollection services)
     {
-            services.AddScoped<IKeyVaultSecretsService, KeyVaultSecretsService>();            
+            services.AddTransient<IKeyVaultSecretsService>( p => new KeyVaultSecretsService(DEFAULT_KEYVAULT_NAME));            
             return services;
     }
 
